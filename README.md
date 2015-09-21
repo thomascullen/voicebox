@@ -4,6 +4,9 @@
 
 [Download](https://github.com/thomascullen/voicebox/releases/download/0.1.0/VoiceBox-0.1.0.zip)
 
+## How
+Press `alt+s` to trigger the voicebox window
+
 ## What can you do?
 VoiceBox currently has a very limited set of sentences it understands. If you want to contribute to this, please look at the [adding responders](https://github.com/thomascullen/voicebox#adding-responders) section.
 
