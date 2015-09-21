@@ -20,6 +20,11 @@ What is a guitar
 What's the weather like in Dublin
 ```
 
+## Adding better voices
+You can change the voice in the OS X speech and dictation settings. In the system voice dropdown you can select 'custom' which will allow you to download more voices. I use 'Samantha' which is the same voice used by siri on the iPhone.
+
+![voices](http://i59.tinypic.com/iwjju8.png)
+
 ## Dev Setup
 VoiceBox is built on top of [electron](http://electron.atom.io).
 ```
