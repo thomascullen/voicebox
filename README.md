@@ -1,8 +1,8 @@
 ![VoiceBox](assets/logo.png)
 
-A voice control app built with [electron](http://electron.atom.io)
-
 ![example](http://thomascullen.io/voicebox/voicebox.gif)
+
+[Download](https://github.com/thomascullen/voicebox/releases/download/0.1.0/VoiceBox-0.1.0.zip)
 
 ## What can you do?
 VoiceBox currently has a very limited set of sentences it understands. If you want to contribute to this, please look at the [adding responders](https://github.com/thomascullen/voicebox#adding-responders) section.
