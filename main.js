@@ -3,6 +3,7 @@ var Menu = require('menu');
 var Tray = require('tray');
 var path = require('path');
 var globalShortcut = require('global-shortcut');
+var os = require('os');
 
 voiceBox = require('./voicebox');
 
@@ -13,7 +14,14 @@ require("fs").readdirSync(responsesPath).forEach(function(file) {
 });
 
 // Hide the dock icon
-app.dock.hide()
+if(os.platform() === 'darwin')
+  app.dock.hide();
+
+// setting some chromium flags to enable window transparency on linux
+if(os.platform() === 'linux'){
+  app.commandLine.appendSwitch('enable-transparent-visuals');
+  app.commandLine.appendSwitch('disable-gpu');
+}
 
 var trayIcon = null;
 

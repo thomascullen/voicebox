@@ -11,7 +11,8 @@
     "url": "www.thomascullen.io"
   },
   "scripts": {
-    "build": "electron-packager ./ VoiceBox --overwrite --out=dist --ignore='^/dist$' --platform=darwin --arch=x64 --version=0.33.0 --asar --icon=assets/voicebox.icns && cd dist/VoiceBox-darwin-x64 && zip -ryXq9 ../VoiceBox-${npm_package_version}.zip VoiceBox.app"
+    "build": "electron-packager ./ VoiceBox --overwrite --out=dist --ignore='^/dist$' --platform=darwin --arch=x64 --version=0.33.0 --asar --icon=assets/voicebox.icns && cd dist/VoiceBox-darwin-x64 && zip -ryXq9 ../VoiceBox-${npm_package_version}.zip VoiceBox.app",
+    "build-linux": "electron-packager ./ VoiceBox --overwrite --out=dist --ignore='^/dist$' --platform=linux --arch=x64 --version=0.33.0 --asar  && cd dist/VoiceBox-linux-x64 && zip -ryXq9 ../VoiceBox-${npm_package_version}.zip VoiceBox"
   },
   "devDependencies": {
     "electron-prebuilt": "^0.33.0",
@@ -21,6 +22,7 @@
     "cheerio": "^0.19.0",
     "configstore": "^1.2.1",
     "request": "^2.63.0",
-    "timer.js": "^1.0.3"
+    "timer.js": "^1.0.3",
+    "say": "^0.6.0"
   }
 }

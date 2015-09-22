@@ -3,6 +3,7 @@ var Configstore = require('configstore');
 var spawn = require('child_process').spawn;
 var BrowserWindow = require('browser-window');
 var VoiceBoxResponder = require('./voicebox_responder');
+var say = require('say');
 
 function VoiceBox(){
   var self = this
@@ -64,11 +65,12 @@ function VoiceBox(){
 
   // this.repond respondes with a given message
   this.respond = function(message, callback){
-    self.last_response = message
+    /*self.last_response = message
     self.voice = spawn('say', [message])
     self.voice.addListener('exit', function (code, signal) {
       if ( callback ){ callback() }
-    });
+    });*/
+    say.speak(null,  message, callback);
   }
 
   // this.choice responds with a given message and listens for a repsonse
