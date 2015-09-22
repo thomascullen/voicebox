@@ -13,7 +13,7 @@ require("fs").readdirSync(responsesPath).forEach(function(file) {
 });
 
 // Hide the dock icon
-app.dock.hide()
+// app.dock.hide()
 
 var trayIcon = null;
 
