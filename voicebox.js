@@ -1,9 +1,9 @@
 var ipc = require('ipc');
+var say = require('./say.js');
 var Configstore = require('configstore');
 var spawn = require('child_process').spawn;
 var BrowserWindow = require('browser-window');
 var VoiceBoxResponder = require('./voicebox_responder');
-var say = require('say');
 
 function VoiceBox(){
   var self = this
@@ -13,7 +13,6 @@ function VoiceBox(){
   // All of the defined responses inside the responses directory are stored into
   // this array
   this.responders = []
-  this.voice = undefined
   // this.listening is set to true when voice recognition is active
   this.listening = false
   // this.window refrences the voice recognition window when it is active
@@ -30,9 +29,7 @@ function VoiceBox(){
   // this.listen actives the voice recognition window
   // the voice recognition code can be found in listening.js
   this.listen = function(){
-    if ( self.voice ){
-      self.voice.kill()
-    }
+    say.stop()
 
     self.listening = true
     self.window = new BrowserWindow({
@@ -65,11 +62,7 @@ function VoiceBox(){
 
   // this.repond respondes with a given message
   this.respond = function(message, callback){
-    /*self.last_response = message
-    self.voice = spawn('say', [message])
-    self.voice.addListener('exit', function (code, signal) {
-      if ( callback ){ callback() }
-    });*/
+    self.last_response = message
     say.speak(null,  message, callback);
   }
 
