@@ -2,11 +2,12 @@ var app = require('app');  // Module to control application life.
 var Menu = require('menu');
 var Tray = require('tray');
 var path = require('path');
-var Settings = require('./voicebox/settings');
 var globalShortcut = require('global-shortcut');
 var os = require('os');
 
-voiceBox = require('./voicebox');
+voiceBox = require('./app/voicebox');
+var settings = require('./app/settings');
+
 
 // require all files in the /responses directory
 var responsesPath = require("path").join(__dirname, "responders");
@@ -35,7 +36,7 @@ app.on('ready', function() {
     {
       label: 'Settings',
       click: function(){
-        Settings.open();
+        settings.open();
       }
     },
     {

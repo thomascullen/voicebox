@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>VoiceBox Settings</title>
-    <link rel="stylesheet" href="css/reset.css" >
-    <link rel="stylesheet" href="css/settings.css" >
+    <link rel="stylesheet" href="../assets/css/reset.css" >
+    <link rel="stylesheet" href="../assets/css/settings.css" >
   </head>
   <body>
     <div class="settings_header">
@@ -12,10 +12,10 @@
     </div>
     <div class="settings_body">
       <div class="setting">
-        <input type="checkbox">
+        <input type="checkbox" onchange="launchOnStartup(this);" id='launch_on_startup'>
         <label>Launch on start up</label>
       </dv>
     </div>
-    <script type="text/javascript" src='js/settings.js'></script>
+    <script type="text/javascript" src='settings.js'></script>
   </body>
 </html>

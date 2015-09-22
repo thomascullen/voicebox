@@ -23,7 +23,7 @@ html, body{
   box-shadow:
     0 1px 0 #d1d5d9,
     0 1px 5px rgba(0, 0, 0, 0.1);
-  background: url('../assets/voicebox.png') center / cover no-repeat;
+  background: url('../voicebox.png') center / cover no-repeat;
 }
 
 .settings_body{
