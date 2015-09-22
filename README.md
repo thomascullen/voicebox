@@ -94,6 +94,14 @@ voiceBox.db.set('users_name', 'thomas')
 voiceBox.db.get('users_name')
 ```
 
+## Ideas for more responders
+- Adding / Reading events from calendar
+- Sending / Reading messages from messages.app
+- Creating reminders
+- Setting timers
+- Reading contact information from contants
+- Latest news
+
 ## Todo
 All the things
 
