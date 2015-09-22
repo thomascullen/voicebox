@@ -2,6 +2,7 @@ var app = require('app');  // Module to control application life.
 var Menu = require('menu');
 var Tray = require('tray');
 var path = require('path');
+var Settings = require('./voicebox/settings');
 var globalShortcut = require('global-shortcut');
 var os = require('os');
 
@@ -31,6 +32,12 @@ app.on('ready', function() {
   // Tray icon
   trayIcon = new Tray(path.join(__dirname, 'assets/tray.png'));
   var contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Settings',
+      click: function(){
+        Settings.open();
+      }
+    },
     {
       label: 'Quit',
       click: function(){
