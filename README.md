@@ -105,6 +105,7 @@ voiceBox.db.get('users_name')
 - Creating reminders
 - Reading contact information from contants
 - Latest news
+- Unit Conversions
 
 ## Todo
 All the things

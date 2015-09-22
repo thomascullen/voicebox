@@ -115,6 +115,10 @@ function VoiceBox(){
       response.response()
     }
   })
+
+  ipc.on('cancel', function(event){
+    self.stopListening()
+  })
 }
 
 module.exports = new VoiceBox()

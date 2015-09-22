@@ -11,6 +11,13 @@ var waitingForResponse = false
 
 recognition.onresult = function(event) {
   var interim_transcript = '';
+  var currentResult = event.results[event.resultIndex][0].transcript
+
+  // if they said cancel
+  if ( /cancel/i.test(currentResult) ){
+    recognition.stop()
+    ipc.send('cancel')
+  }
 
   for (var i = event.resultIndex; i < event.results.length; ++i) {
     interim_transcript += event.results[i][0].transcript;
