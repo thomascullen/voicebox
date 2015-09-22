@@ -1,6 +1,7 @@
 <img src="assets/logo@2x.png" width="259" align="left">
 
 <br>
+<br>
 
 ![example](http://thomascullen.io/voicebox/voicebox.gif)
 
