@@ -17,6 +17,12 @@ require("fs").readdirSync(responsesPath).forEach(function(file) {
 if(os.platform() === 'darwin')
   app.dock.hide();
 
+// setting some chromium flags to enable window transparency on linux
+if(os.platform() === 'linux'){
+  app.commandLine.appendSwitch('enable-transparent-visuals');
+  app.commandLine.appendSwitch('disable-gpu');
+}
+
 var trayIcon = null;
 
 // This method will be called when Electron has finished
