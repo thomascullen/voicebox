@@ -20,6 +20,8 @@ My name is Thomas
 What's my name?
 Tell me about [any topic]
 What is a guitar
+Start a timer for 20 Seconds
+Remind me to take the pizza out of the oven in 15 minutes
 What's the weather like in Dublin
 ```
 
@@ -101,7 +103,6 @@ voiceBox.db.get('users_name')
 - Adding / Reading events from calendar
 - Sending / Reading messages from messages.app
 - Creating reminders
-- Setting timers
 - Reading contact information from contants
 - Latest news
 
