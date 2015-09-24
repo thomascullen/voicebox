@@ -23,6 +23,10 @@ voiceBox.addResponder(/What's my name/i, function(){
   }
 })
 
+voiceBox.addResponder(/how are you/i, function(){
+  voiceBox.respond('I\'m good, thanks for asking!')
+})
+
 function storeName(name){
   voiceBox.db.set('users_name', name);
 }
