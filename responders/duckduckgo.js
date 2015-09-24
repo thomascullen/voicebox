@@ -1,5 +1,5 @@
 // USES THE AMAZING DUCKDUCKGO API(https://duckduckgo.com/api)
-voiceBox.addResponder(/(Find information about |Tell me about |What is (?:an|a)?\s?|What are )([^\d]+)/i, function(){
+voiceBox.addResponder(/(Find information about |Tell me about |What is\s?[an]*\s(?!the)|What are )([^\d]+)/i, function(){
   var query = RegExp.$2
   voiceBox.request('http://api.duckduckgo.com/?q=Where+is+'+query+'&format=json&pretty=1', function (error, response, body) {
     if (!error && response.statusCode == 200) {

@@ -21,6 +21,9 @@ What's my name?
 Tell me about [any topic]
 What is a guitar
 Start a timer for 20 Seconds
+what is 20% of 245
+Is Into The Wild a good movie?
+What is the rating for how I met your mother
 Remind me to take the pizza out of the oven in 15 minutes
 What's the weather like in Dublin
 ```
