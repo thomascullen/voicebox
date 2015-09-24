@@ -1,0 +1,98 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body{
+  height: 100%;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  overflow: hidden;
+  text-align: center;
+}
+
+.voicebox{
+  opacity: 0.9;
+  width: 320px;
+  margin: 10px 0 0 0;
+  border-radius: 5px;
+  display: inline-block;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.7);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  background-image: linear-gradient(-180deg, #120F22 0%, #0D0723 100%);
+  -webkit-animation: slideIn 0.4s cubic-bezier(0.2, 0, 0, 1.2);
+}
+
+#voicebox.dismiss{
+  -webkit-animation: slideOut 0.4s cubic-bezier(0.2, 0, 0, 1.2) FORWARDS;
+}
+
+@-webkit-keyframes slideIn{
+  0%{
+    opacity: 0;
+    -webkit-transform: translate(0, 50px);
+  }
+  100%{
+    opacity: 1;
+    -webkit-transform: translate(0, 0);
+  }
+}
+
+@-webkit-keyframes slideOut{
+  0%{
+    opacity: 0.9;
+    -webkit-transform: translate(0, 0);
+  }
+  100%{
+    opacity: 0;
+    -webkit-transform: translate(0, 50px);
+  }
+}
+
+#input{
+  opacity: 0;
+  color: #FFFFFF;
+  font-size: 20px;
+  font-weight: 100;
+  margin: 0 0 15px 0;
+  letter-spacing: 1px;
+  line-height: 30px;
+  padding: 30px 30px 15px 30px;
+  font-family: 'Helvetica Neue', sans-serif;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  -webkit-animation: slideIn 0.5s cubic-bezier(0.4, 0, 0, 1.3) 0s FORWARDS;
+}
+
+#input i{
+  font-style: normal;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.soundwaves{
+  width: 100%;
+  height: 80px;
+  position: relative;
+}
+
+.soundwaves div{
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 50px;
+  display: block;
+  position: absolute;
+  transform-style: preserve-3d;
+  background: url('../images/soundwave.svg') center / 320px 50px no-repeat;
+}
+
+.soundwaves div:nth-child(1){ opacity: 0.8; -webkit-animation: soundwave 1.4s linear 0.0s infinite; }
+.soundwaves div:nth-child(2){ opacity: 0.6; -webkit-animation: soundwave 1.4s linear 0.15s infinite; }
+.soundwaves div:nth-child(3){ opacity: 0.3; -webkit-animation: soundwave 1.4s linear 0.3s infinite; }
+
+@-webkit-keyframes soundwave{
+  0%{ -webkit-transform: scaleY(1); }
+  50%{ -webkit-transform: scaleY(-1); }
+  100%{ -webkit-transform: scaleY(1); }
+}

@@ -33,15 +33,15 @@ function VoiceBox(){
 
     self.listening = true
     self.window = new BrowserWindow({
-      width: 500,
-      height: 300,
       frame: false,
       resizable: false,
       transparent: true,
+      width: 330,
+      height: 400,
       'always-on-top': true
     });
 
-    self.window.loadUrl('file://' + __dirname + '/listening.html');
+    self.window.loadUrl('file://' + __dirname + '/../views/listening.html');
   }
 
   // sets listening to false and closes the voice recognition window
