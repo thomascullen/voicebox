@@ -1,11 +1,10 @@
-voiceBox.addResponder(/Hi|hello|hey/i, function(){
+voiceBox.addResponder(/^Hi|hello|hey/i, function(){
   voiceBox.respond('Hello')
 })
 
 voiceBox.addResponder(/^Thanks?\s?(you)?/i, function(){
   voiceBox.respond('You are welcome')
 })
-
 
 voiceBox.addResponder(/My name is (\w+)/i, function(){
   var name = RegExp.$1;

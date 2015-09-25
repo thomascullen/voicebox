@@ -6,8 +6,11 @@ var globalShortcut = require('global-shortcut');
 var os = require('os');
 
 voiceBox = require('./app/voicebox');
+
 var settings = require('./app/settings');
 
+var updater = require('./app/updater');
+updater.checkForUpdate(app);
 
 // require all files in the /responses directory
 var responsesPath = require("path").join(__dirname, "responders");

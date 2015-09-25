@@ -19,11 +19,10 @@ html, body{
   border-radius: 50%;
   position: absolute;
   margin: 0 0 0 -40px;
+  box-sizing: border-box;
   border: 4px solid white;
-  box-shadow:
-    0 1px 0 #d1d5d9,
-    0 1px 5px rgba(0, 0, 0, 0.1);
-  background: url('../voicebox.png') center / cover no-repeat;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  background: url('../images/icon.png') center / 80px 80px no-repeat;
 }
 
 .settings_body{
