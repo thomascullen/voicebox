@@ -11,7 +11,7 @@
     "url": "www.thomascullen.io"
   },
   "scripts": {
-    "build": "electron-packager ./ VoiceBox --overwrite --out=dist --ignore='^/dist$' --platform=darwin --arch=x64 --version=0.33.0 --asar --icon=assets/voicebox.icns && cd dist/VoiceBox-darwin-x64 && zip -ryXq9 ../VoiceBox-${npm_package_version}.zip VoiceBox.app",
+    "build": "electron-packager ./ VoiceBox --overwrite --out=dist --ignore='^/dist$' --platform=darwin --arch=x64 --version=0.33.0 --asar --icon=assets/icon.icns && cd dist/VoiceBox-darwin-x64 && zip -ryXq9 ../VoiceBox-${npm_package_version}.zip VoiceBox.app",
     "build-linux": "electron-packager ./ VoiceBox --overwrite --out=dist --ignore='^/dist$' --platform=linux --arch=x64 --version=0.33.0 --asar  && cd dist/VoiceBox-linux-x64 && zip -ryXq9 ../VoiceBox-${npm_package_version}.zip VoiceBox",
     "rebuild-modules" : "node ./node_modules/.bin/electron-rebuild"
   },

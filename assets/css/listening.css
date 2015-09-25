@@ -19,10 +19,9 @@ html, body{
   border-radius: 5px;
   display: inline-block;
   box-sizing: border-box;
-  background: rgba(0,0,0,0.7);
   box-shadow: 0 1px 3px rgba(0,0,0,0.6);
   background-image: linear-gradient(-180deg, #120F22 0%, #0D0723 100%);
-  -webkit-animation: slideIn 0.4s cubic-bezier(0.2, 0, 0, 1.2);
+  -webkit-animation: slideIn 0.4s cubic-bezier(0.2, 0, 0, 1);
 }
 
 #voicebox.dismiss{
@@ -35,7 +34,7 @@ html, body{
     -webkit-transform: translate(0, 50px);
   }
   100%{
-    opacity: 1;
+    opacity: 0.9;
     -webkit-transform: translate(0, 0);
   }
 }
