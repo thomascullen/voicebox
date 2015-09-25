@@ -1,11 +1,8 @@
-<img src="assets/logo@2x.png" width="259" align="left">
-
-<br>
-<br>
-
-![example](http://thomascullen.io/voicebox/voicebox.gif)
+<img src="assets/images/icon.png" width="100">
 
 [Download](https://github.com/thomascullen/voicebox/releases/download/0.1.0/VoiceBox-0.1.0.zip)
+
+![example](http://thomascullen.io/voicebox/voicebox.gif)
 
 ## How
 Press `alt+s` to trigger the voicebox window

@@ -35,4 +35,7 @@ html, body{
   border-bottom: 1px solid #e8ecf0;
 }
 
+input[type=checkbox]{ vertical-align: middle; }
+label{ vertical-align: middle; }
+
 .setting input[type=checkbox]{ margin: 0 5px 0 0; }

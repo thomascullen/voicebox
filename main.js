@@ -28,13 +28,13 @@ if(os.platform() === 'linux'){
   app.commandLine.appendSwitch('disable-gpu');
 }
 
-var trayIcon = null;
+trayIcon = null;
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
   // Tray icon
-  trayIcon = new Tray(path.join(__dirname, 'assets/tray.png'));
+  trayIcon = new Tray(settings.iconPath());
   var contextMenu = Menu.buildFromTemplate([
     {
       label: 'Settings',

@@ -2,9 +2,9 @@ var ipc = require('ipc');
 
 ipc.send('get_config')
 ipc.on('voicebox_config', function(config){
-    document.getElementById('launch_on_startup').checked = config.launch_on_startup
+    document.getElementById('dark_menu_tray_icon').checked = config.dark_menu_tray_icon
 })
 
-function launchOnStartup(input){
-  ipc.send('save_setting', 'launch_on_startup', input.checked)
+function darkMenuTrayIcon(input){
+  ipc.send('save_setting', 'dark_menu_tray_icon', input.checked)
 }
