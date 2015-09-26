@@ -5,17 +5,19 @@ function Updater(){
 
   // check github for a new release
   this.checkForUpdate = function(app){
-    var options = {
-      url: 'https://api.github.com/repos/thomascullen/voicebox/releases/latest',
-      headers: { 'User-Agent': 'thomascullen' }
-    }
-
-    request(options, function (error, response, body) {
-      var latest_version = JSON.parse(body).tag_name;
-      if ( app.getVersion() !== latest_version ){
-        self.update()
-      }
-    });
+    // this reaches the github api limit pretty quickly...
+    
+    // var options = {
+    //   url: 'https://api.github.com/repos/thomascullen/voicebox/releases/latest',
+    //   headers: { 'User-Agent': 'thomascullen' }
+    // }
+    //
+    // request(options, function (error, response, body) {
+    //   var latest_version = JSON.parse(body).tag_name;
+    //   if ( app.getVersion() !== latest_version ){
+    //     self.update()
+    //   }
+    // });
   }
 
   // update the app
