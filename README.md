@@ -1,6 +1,6 @@
 <img src="assets/images/icon.png" width="100">
 
-[Download](https://github.com/thomascullen/voicebox/releases/download/0.1.0/VoiceBox-0.1.0.zip)
+[Download](https://github.com/thomascullen/voicebox/releases)
 
 ![example](http://thomascullen.io/voicebox/voicebox.gif)
 
