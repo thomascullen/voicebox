@@ -6,7 +6,6 @@ var globalShortcut = require('global-shortcut');
 var os = require('os');
 
 voiceBox = require('./app/voicebox');
-
 var settings = require('./app/settings');
 
 var updater = require('./app/updater');

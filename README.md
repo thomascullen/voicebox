@@ -34,6 +34,7 @@ You can change the voice in the OS X speech and dictation settings. In the syste
 VoiceBox is built on top of [electron](http://electron.atom.io).
 ```
 npm install
+grunt watch
 electron .
 ```
 Now press `alt+s`
