@@ -1,6 +1,6 @@
 {
   "name": "Box",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "main": "main.js",
   "license": "MIT",
   "description": "OS X voice control app built with electron",
@@ -11,15 +11,22 @@
     "url": "www.thomascullen.io"
   },
   "scripts": {
-    "build": "electron-packager ./ VoiceBox --overwrite --out=dist --ignore='^/dist$' --platform=darwin --arch=x64 --version=0.33.0 --asar --icon=assets/icon.icns && cd dist/VoiceBox-darwin-x64 && zip -ryXq9 ../VoiceBox-${npm_package_version}.zip VoiceBox.app",
+    "build-osx": "electron-packager ./ VoiceBox --overwrite --out=dist --ignore='^dist|$' --platform=darwin --arch=x64 --version=0.33.0 --asar --icon=assets/icon.icns && cd dist/VoiceBox-darwin-x64 && zip -ryXq9 ../VoiceBox-${npm_package_version}.zip VoiceBox.app",
     "build-linux": "electron-packager ./ VoiceBox --overwrite --out=dist --ignore='^/dist$' --platform=linux --arch=x64 --version=0.33.0 --asar  && cd dist/VoiceBox-linux-x64 && zip -ryXq9 ../VoiceBox-${npm_package_version}.zip VoiceBox",
     "rebuild-modules": "node ./node_modules/.bin/electron-rebuild"
   },
   "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-env": "^0.4.4",
+    "grunt-babel": "^5.0.3",
+    "grunt-electron": "^2.0.1",
+    "electron-rebuild": "^1.0.0",
     "electron-prebuilt": "^0.33.0",
-    "electron-rebuild": "^1.0.0"
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-clean": "^0.6.0"
   },
   "dependencies": {
+    "react": "^0.13.3",
     "configstore": "^1.2.1",
     "request": "^2.63.0",
     "timer.js": "^1.0.3"
