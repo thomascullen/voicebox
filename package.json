@@ -26,9 +26,14 @@
     "grunt-contrib-clean": "^0.6.0"
   },
   "dependencies": {
-    "react": "^0.13.3",
     "configstore": "^1.2.1",
+    "decompress": "^2.3.0",
+    "npm": "^3.3.4",
+    "react": "^0.13.3",
     "request": "^2.63.0",
+    "tar": "^2.2.1",
+    "tar-fs": "^1.8.1",
+    "tar.gz": "^1.0.1",
     "timer.js": "^1.0.3"
   }
 }

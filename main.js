@@ -1,3 +1,4 @@
+var fs = require("fs")
 var app = require('app');  // Module to control application life.
 var Menu = require('menu');
 var Tray = require('tray');
@@ -7,15 +8,10 @@ var os = require('os');
 
 voiceBox = require('./app/voicebox');
 var settings = require('./app/settings');
+var respondersManager = require('./app/responders_manager');
 
 var updater = require('./app/updater');
 updater.checkForUpdate(app);
-
-// require all files in the /responses directory
-var responsesPath = require("path").join(__dirname, "responders");
-require("fs").readdirSync(responsesPath).forEach(function(file) {
-  require("./responders/" + file);
-});
 
 // Hide the dock icon
 if(os.platform() === 'darwin')
