@@ -1,9 +1,9 @@
+var spawn = require('child_process').spawn;
 var fs = require('fs');
 var npm = require("npm");
 var app = require('app');
 var path = require('path');
 var request = require('request');
-var Decompress = require('decompress');
 
 var voiceBoxPath = path.join(app.getPath('home'), '.voicebox')
 var respondersPath = path.join(voiceBoxPath, 'responders')
@@ -18,9 +18,11 @@ if (!fs.existsSync(respondersPath)){ fs.mkdirSync(respondersPath); }
 
 // create the responders.json file if it doesnt exist
 if (!fs.existsSync(respondersJsonPath)){
-  fs.writeFileSync(respondersJsonPath, JSON.stringify({
-    "voicebox-basics" : "0.1.1"
-  }));
+  fs.writeFileSync(respondersJsonPath, '{\n\
+  "voicebox-basics" : "*",\n\
+  "voicebox-timers" : "*",\n\
+  "voicebox-weather" : "*"\n\
+}');
 }
 
 // create a symlink to the responders directory
@@ -101,30 +103,22 @@ function installResponder(responder, callback){
 function unzipPackage(filePath, callback){
   // the extracted path is the same path without the .tgz
   var packagePath = filePath.slice(0, -4)
+  packagePath += '/'
 
-  // extract the file
-  new Decompress({mode: '755'})
-      .src(filePath)
-      .dest(packagePath)
-      .use(Decompress.targz({strip: 1}))
-      .run(function(){
-        // delete the .tgz after it has been extracted
-        fs.unlink(filePath, function(){
-          // install the package dependencies after the .tgz has been deleted
-          installPackageDependencies(packagePath, callback);
-        });
+  fs.mkdir(packagePath, function(){
+    var tar = spawn('tar', ['-C', packagePath, '-xf', filePath, '--strip-components', 1])
+    tar.on('exit', function(){
+      fs.unlink(filePath, function(){
+        installPackageDependencies(packagePath, callback);
       });
+    })
+  })
 }
 
 // install the package dependencies for a given path
 function installPackageDependencies(packagePath, callback){
-  // change the process context into the packagePath
-  process.chdir(packagePath+'/');
-  // load npm and install the dependencies
-  npm.load(function (err) {
-    npm.commands.install([], function (er, data) {
-      // run the callback passed into installResponder when npm install is finished
-      callback()
-    });
-  });
+  var tar = spawn('npm', ['install', packagePath, '--prefix', packagePath]);
+  tar.on('exit', function(){
+    callback()
+  })
 }
