@@ -25,6 +25,12 @@ Remind me to take the pizza out of the oven in 15 minutes
 What's the weather like in Dublin
 ```
 
+## Adding Responders
+When you run voicebox for the first time it will create a `responders.json` file
+at `~/.voicebox/responders.json` here you can add voicebox responders which will
+be downloaded from NPM. You must restart voicebox to download repsonders you add
+to the `responders.json` file.
+
 ## Adding better voices
 You can change the voice in the OS X speech and dictation settings. In the system voice dropdown you can select 'custom' which will allow you to download more voices. I use 'Samantha' which is the same voice used by siri on the iPhone.
 
@@ -40,8 +46,13 @@ electron .
 Now press `alt+s`
 
 ## Adding responders
-Create a new javascript file for your responder in the `/responders` directory.
-You can then use the `voiceBox.addResponder` method to define your responder.
+Create a new folder for your responder in `~/.voicebox/responders`. This should
+have the basic structure for an NPM module; a package.json and an index.js.
+You can then use the `voiceBox.addResponder` method inside your module
+to define your responder.
+
+You can publish your responder module to NPM so that other users can use your
+responder
 
 The `addResponder` method takes two parameters:
 - **regex** ( Regex ): The users input will be matched against this to determine if it should respond

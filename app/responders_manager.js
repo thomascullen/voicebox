@@ -1,11 +1,9 @@
 var fs = require('fs');
-var Decompress = require('decompress');
-var spawn = require('child_process').spawn;
 var npm = require("npm");
 var app = require('app');
-var zlib = require('zlib');
 var path = require('path');
 var request = require('request');
+var Decompress = require('decompress');
 
 var voiceBoxPath = path.join(app.getPath('home'), '.voicebox')
 var respondersPath = path.join(voiceBoxPath, 'responders')
