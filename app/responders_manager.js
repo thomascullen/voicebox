@@ -1,6 +1,5 @@
 var spawn = require('child_process').spawn;
 var fs = require('fs');
-var npm = require("npm");
 var app = require('app');
 var path = require('path');
 var request = require('request');
@@ -36,19 +35,25 @@ readRespondersJson();
 // load the responders
 function loadResponders(){
   installedResponders().forEach(function(responder){
-    require('../responders/'+responder);
+    loadResponder(responder);
   })
 }
 
-// returns an array of the installed responders
+// require a given responder folder
+function loadResponder(responder_folder){
+  require('../responders/'+responder_folder);
+  console.log('Loaded responder : '+responder_folder);
+}
+
+// returns an array of currently installed responders
 function installedResponders() {
   return fs.readdirSync(respondersPath).filter(function(file) {
     return fs.statSync(path.join(respondersPath, file)).isDirectory();
   });
 }
 
-// # readRespondersJson
-// reads the responders json file
+// reads the responders json file and installs the responders that have not
+// yet been installed
 function readRespondersJson(){
   var responders = [];
   var respondersJson = JSON.parse(fs.readFileSync(respondersJsonPath, 'utf8'));
@@ -58,19 +63,18 @@ function readRespondersJson(){
       version: respondersJson[responder]
     });
   }
-  // load the responders
+  // install the repsonders
   installResponders(responders);
 }
 
-// install the list of responders
+// install the list of responders, skip any that have already been installed
 function installResponders(responders){
   var installed_responders = installedResponders()
   responders.forEach(function(responder){
     var responder_name = responder.title+'-'+responder.version
     if ( installed_responders.indexOf(responder_name) == -1 ) {
       installResponder(responder, function(){
-        console.log('installed and loaded '+responder_name);
-        require('../responders/'+responder_name);
+        loadResponder(responder_name)
       });
     }
   });
