@@ -19,7 +19,11 @@ if (!fs.existsSync(voiceBoxPath)){ fs.mkdirSync(voiceBoxPath); }
 if (!fs.existsSync(respondersPath)){ fs.mkdirSync(respondersPath); }
 
 // create the responders.json file if it doesnt exist
-if (!fs.existsSync(respondersJsonPath)){ fs.writeFile(respondersJsonPath, '{}'); }
+if (!fs.existsSync(respondersJsonPath)){
+  fs.writeFileSync(respondersJsonPath, JSON.stringify({
+    "voicebox-basics" : "0.1.1"
+  }));
+}
 
 // create a symlink to the responders directory
 if (!fs.existsSync('responders')){ fs.symlinkSync(respondersPath, 'responders'); }
