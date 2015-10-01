@@ -1,17 +1,19 @@
-var fs = require("fs")
-var app = require('app');  // Module to control application life.
+var os = require('os');
+var fs = require("fs");
+var app = require('app');
 var Menu = require('menu');
 var Tray = require('tray');
 var path = require('path');
 var globalShortcut = require('global-shortcut');
-var os = require('os');
 
 voiceBox = require('./app/voicebox');
+// load the responders manager
+respondersManager = require('./app/responders_manager');
 var settings = require('./app/settings');
-var respondersManager = require('./app/responders_manager');
 
 var updater = require('./app/updater');
 updater.checkForUpdate(app);
+
 
 // Hide the dock icon
 if(os.platform() === 'darwin')
@@ -31,6 +33,12 @@ app.on('ready', function() {
   // Tray icon
   trayIcon = new Tray(settings.iconPath());
   var contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Responders Manager',
+      click: function(){
+        respondersManager.open();
+      }
+    },
     {
       label: 'Settings',
       click: function(){
