@@ -1,0 +1,86 @@
+body{
+  background: #ebeff2;
+}
+
+button{
+  border: none;
+  height: 25px;
+  outline: none;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 25px;
+  text-align: center;
+  border-radius: 3px;
+  background: #5ca4fc;
+  padding: 0 10px 0 10px;
+}
+
+button:hover{ background: #6790fd; }
+
+.install_responder{
+  background: white;
+  padding: 15px 20px 20px 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.install_responder h2{
+  color: #333;
+  font-size: 16px;
+  margin: 0 0 5px 0;
+}
+
+.install_responder input[type=text]{
+  width: 82%;
+  outline: none;
+  font-size: 14px;
+  border-radius: 3px;
+  border: 1px solid #ebeff2;
+  padding: 10px 15px 10px 15px;
+}
+
+.install_responder button{
+  width: 15%;
+  padding: 0;
+  height: 40px;
+  font-size: 14px;
+  margin: 0 0 0 3%;
+  line-height: 40px;
+}
+
+h3{
+  font-size: 13px;
+  margin: 0 0 10px 0;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+ul{
+  list-style: none;
+  margin: 15px 20px 20px 20px;
+}
+
+ul li{
+  background: white;
+  margin: 0 0 15px 0;
+  border-radius: 3px;
+  position: relative;
+  padding: 10px 10px 10px 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+ul li button{ margin: 0 10px 0 0; }
+
+h4{
+  display: block;
+  font-size: 14px;
+  margin: 0 0 5px 0;
+}
+
+span.version{
+  top: 10px;
+  color: #999;
+  right: 10px;
+  font-size: 12px;
+  position: absolute;
+  margin: 0 0 10px 0;
+}

@@ -40,12 +40,8 @@ function RespondersManager(){
     if (!fs.existsSync(self.appDataPath)){ fs.mkdirSync(self.appDataPath); }
     // create the responders dir if it doesnt exist
     if (!fs.existsSync(self.respondersPath)){ fs.mkdirSync(self.respondersPath); }
-    // create the responders.json file if it doesnt exist
-    if (!fs.existsSync(self.respondersStorage)){ fs.writeFileSync(self.respondersStorage, '{}'); }
     // create a symlink to the responders directory
     if (!fs.existsSync('responders')){ fs.symlinkSync(self.respondersPath, 'responders'); }
-    // load the installed responders into self.installedResponders
-    self.installedResponders = JSON.parse(fs.readFileSync(self.respondersStorage, 'utf8'));
     // run the callback
     callback();
   }
@@ -54,7 +50,9 @@ function RespondersManager(){
   this.loadResponders = function(){
     var installedResponders = self.installedResponders;
     self.responderFolders().forEach(function(responder){
-      self.loadResponder(responder);
+      self.loadResponder(responder, function(){
+        self.checkForUpdate(responder);
+      });
     })
   }
 
@@ -65,10 +63,15 @@ function RespondersManager(){
   }
 
   // loadResponder loads a given responder
-  this.loadResponder = function(responder){
+  this.loadResponder = function(responder, callback){
     if (self.responderInstalled(responder)){
+      // require the responder
       require('../responders/'+responder);
+      // get the package json file
+      var packageJson = require('../responders/'+responder+'/package.json')
+      self.installedResponders[responder] = packageJson
       console.log('Loaded responder : '+responder);
+      if ( callback ){ callback(); }
     }
   }
 
@@ -85,9 +88,11 @@ function RespondersManager(){
           var tarballURL = body.dist.tarball;
           var responderVersion = body.version;
           self.downloadResponder(responder, tarballURL, function(){
-            self.installedResponders[responder] = responderVersion
-            self.saveRespondersState();
+            self.installedResponders[responder] = {
+              version: responderVersion
+            }
             self.loadResponder(responder);
+            self.installedRespondersUpdated();
           });
         }else{
           return false;
@@ -150,17 +155,36 @@ function RespondersManager(){
       var responderPath = path.join(__dirname, '../responders/'+responder)
       exec( 'rm -r ' + responderPath, function ( err, stdout, stderr ){
         delete self.installedResponders[responder];
-        self.saveRespondersState();
+        self.installedRespondersUpdated();
       });
     }
   }
 
-  this.saveRespondersState = function(){
-    fs.writeFileSync(self.respondersStorage, JSON.stringify(self.installedResponders), 'utf-8');
+  this.checkForUpdate = function(responder){
+    // search the NPM registry for the package tarball URL so it can be downloaded
+    request.get('https://registry.npmjs.com/'+responder+'/latest', function(err, response, body){
+      var body = JSON.parse(body);
+      // if the pacage exists
+      if ( body.dist && self.installedResponders[responder].version != body.version){
+        self.installedResponders[responder].updated_available = true
+        self.installedRespondersUpdated();
+      }
+    });
+  }
+
+  this.updateResponder = function(responder){
+    self.installResponder(responder);
+  }
+
+  this.installedRespondersUpdated = function(){
+    if ( self.window ){
+      self.window.webContents.send('installed_responders_updated', self.installedResponders)
+    }
   }
 
   this.defaultResponders = function(){
     this.installResponder('voicebox-maths')
+    this.installResponder('voicebox-timers')
     this.installResponder('voicebox-basics')
     this.installResponder('voicebox-weather')
   }

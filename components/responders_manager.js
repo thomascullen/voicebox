@@ -1,5 +1,6 @@
 'use babel';
 
+import ipc from 'ipc';
 import React from 'react';
 import remote from 'remote'
 var manager = remote.getGlobal('respondersManager');
@@ -13,6 +14,14 @@ class RespondersManager extends React.Component {
     }
   }
 
+  componentDidMount(){
+    var self = this
+
+    ipc.on('installed_responders_updated', function(responders) {
+      self.setState({ responders: responders })
+    });
+  }
+
   install(){
     var input = this.refs.responder.getDOMNode();
     var value = input.value;
@@ -22,6 +31,10 @@ class RespondersManager extends React.Component {
     }
   }
 
+  update(responder){
+    manager.updateResponder(responder);
+  }
+
   uninstall(responder){
     manager.uninstallResponder(responder);
   }
@@ -29,21 +42,33 @@ class RespondersManager extends React.Component {
   render() {
     var self = this
     var responders = Object.keys(this.state.responders).map(function(responder, i){
+
+      var updateButton
+      if ( self.state.responders[responder].updated_available ){
+        updateButton = <button onClick={self.update.bind(self, responder)}>Update</button>
+      }
+
       return (
         <li key={i}>
-          <h5>{responder}</h5>
+          <h4>{responder}</h4>
+          <span className='version'>v.{self.state.responders[responder].version}</span>
           <button onClick={self.uninstall.bind(self, responder)}>Uninstall</button>
+          {updateButton}
         </li>
       )
     })
 
     return (
       <div className='responders_manager'>
-        <h2>Install a responder</h2>
-        <input type='text' ref='responder' placeholder='responder title..' />
-        <button onClick={this.install.bind(this)}>Install</button>
-        <h2>Responders</h2>
-        {responders}
+        <div className='install_responder'>
+          <h2>Install a responder</h2>
+          <input type='text' ref='responder' placeholder='responder title..' />
+          <button onClick={this.install.bind(this)}>Install</button>
+        </div>
+        <ul className='responders'>
+          <h3>Installed Responders</h3>
+          {responders}
+        </ul>
       </div>
     )
   }
