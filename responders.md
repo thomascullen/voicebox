@@ -1,0 +1,5 @@
+- [voicebox-basics](https://github.com/VoiceBoxApp/voicebox-basics) : Basic responders
+- [voicebox-timers](https://github.com/VoiceBoxApp/voicebox-timers) : A responder for settings timers
+- [voicebox-weather](https://github.com/VoiceBoxApp/voicebox-weather) : A responder for asking about the weather
+- [voicebox-maths](https://github.com/VoiceBoxApp/voicebox-maths) : A responder for maths equations
+- [voicebox-knowledge](https://github.com/VoiceBoxApp/voicebox-knowledge) : A responder for general knowledge

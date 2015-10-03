@@ -21,8 +21,6 @@ Tell me about [any topic]
 What is a guitar
 Start a timer for 20 Seconds
 what is 20% of 245
-Is Into The Wild a good movie?
-What is the rating for how I met your mother
 Remind me to take the pizza out of the oven in 15 minutes
 What's the weather like in Dublin
 ```
@@ -37,12 +35,15 @@ electron .
 Now press `alt+s`
 
 ## Adding responders
+
+##### As VoiceBox is a very new project we encourage you to publish your responders to npmjs.com and to add them to the [responders](responders.md) list via a pull request.
+
 Create a new folder for your responder. Responders are downloaded from NPM so
 a responder will need at least a package.json and index.js file. Open the responders
 manager and click the 'install from dir' button and select your responder folder.
 
 You should publish your responder module to NPM so that other users can use your
-responder. 
+responder.
 
 The `addResponder` method takes two parameters:
 - **regex** ( Regex ): The users input will be matched against this to determine if it should respond
