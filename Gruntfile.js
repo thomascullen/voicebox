@@ -47,7 +47,7 @@ module.exports = function(grunt) {
           version: '0.33.3',
           platform: 'darwin',
           icon: 'assets/icon.icns',
-          ignore: '^(dist|components)$',
+          ignore: '^(dist|components|responders)$',
           'app-version'   : packageJson.version,
         }
       }

@@ -2,7 +2,7 @@ var fs = require('fs');
 var app = require('app');
 var path = require('path');
 var request = require('request');
-var spawn = require('child_process').spawn;
+var childProcess = require('child_process');
 var exec = require( 'child_process' ).exec;
 var BrowserWindow = require('browser-window');
 
@@ -40,8 +40,6 @@ function RespondersManager(){
     if (!fs.existsSync(self.appDataPath)){ fs.mkdirSync(self.appDataPath); }
     // create the responders dir if it doesnt exist
     if (!fs.existsSync(self.respondersPath)){ fs.mkdirSync(self.respondersPath); }
-    // create a symlink to the responders directory
-    if (!fs.existsSync('responders')){ fs.symlinkSync(self.respondersPath, 'responders'); }
     // run the callback
     callback();
   }
@@ -66,12 +64,18 @@ function RespondersManager(){
   this.loadResponder = function(responder, callback){
     if (self.responderInstalled(responder)){
       // require the responder
-      require('../responders/'+responder);
-      // get the package json file
-      var packageJson = require('../responders/'+responder+'/package.json')
-      self.installedResponders[responder] = packageJson
-      console.log('Loaded responder : '+responder);
-      if ( callback ){ callback(); }
+      var packagePath = path.join(self.respondersPath, responder);
+      var pathToPackage = path.relative(__dirname, packagePath);
+      try {
+        require(pathToPackage)
+        // get the package json file
+        var packageJson = require(pathToPackage+'/package.json')
+        self.installedResponders[responder] = packageJson
+        console.log('Loaded responder : '+responder);
+        if ( callback ){ callback(); }
+      } catch(err) {
+        console.log(err);
+      }
     }
   }
 
@@ -123,39 +127,40 @@ function RespondersManager(){
   this.unzipPackage = function(filePath, callback){
     // the extracted path is the same path without the .tgz
     var packagePath = filePath.slice(0, -4) + '/'
-    fs.mkdir(packagePath, function(){
-      spawn('tar', ['-C', packagePath, '-xf', filePath, '--strip-components', 1])
+    fs.mkdirSync(packagePath);
+    setTimeout(function(){
+      childProcess.spawn('tar', ['-C', packagePath, '-xf', filePath, '--strip-components', 1])
       .on('exit', function(){
-        fs.unlink(filePath, function(){
-          self.installPackageDependencies(packagePath, callback);
-        });
+        fs.unlinkSync(filePath);
+        self.installPackageDependencies(packagePath, callback);
       })
-    })
+    }, 500)
   }
 
   // installPackageDependencies runs npm install inside a package directory
   this.installPackageDependencies = function(packagePath, callback){
-    var tar = spawn('npm', ['install', packagePath, '--prefix', packagePath]);
-    tar.on('exit', function(){
+    childProcess.spawn('npm', ['install'], {cwd: packagePath})
+    .on('exit', function(){
       callback();
     })
   }
 
   // checks if a given responders has already been installed
   this.responderInstalled = function(responder){
-    if (fs.existsSync(path.join(__dirname, '../responders/'+responder+'/'))){
+    if (fs.existsSync(path.join(self.respondersPath, responder+'/package.json'))){
       return true
     }else{
       return false
     }
   }
 
-  this.uninstallResponder = function(responder){
+  this.uninstallResponder = function(responder, callback){
     if ( self.responderInstalled(responder) ){
-      var responderPath = path.join(__dirname, '../responders/'+responder)
-      exec( 'rm -r ' + responderPath, function ( err, stdout, stderr ){
+      var responderPath = path.join(self.respondersPath, responder)
+      exec( 'rm -r ' + self.fixPath(responderPath), function ( err, stdout, stderr ){
         delete self.installedResponders[responder];
         self.installedRespondersUpdated();
+        if ( callback ){ callback(); }
       });
     }
   }
@@ -173,13 +178,19 @@ function RespondersManager(){
   }
 
   this.updateResponder = function(responder){
-    self.installResponder(responder);
+    self.uninstallResponder(responder, function(){
+      self.installResponder(responder);
+    })
   }
 
   this.installedRespondersUpdated = function(){
     if ( self.window ){
       self.window.webContents.send('installed_responders_updated', self.installedResponders)
     }
+  }
+
+  this.fixPath = function(path){
+    return path.replace(" ", "\\ ");
   }
 
   this.defaultResponders = function(){
