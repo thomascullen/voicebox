@@ -4,6 +4,7 @@ var app = require('app');
 var path = require('path');
 var dialog = require('dialog');
 var request = require('request');
+var notifier = require('node-notifier');
 var childProcess = require('child_process');
 var BrowserWindow = require('browser-window');
 
@@ -196,6 +197,11 @@ function RespondersManager(){
       // if the pacage exists
       if ( body.dist && self.installedResponders[responder].version != body.version){
         self.installedResponders[responder].updated_available = true
+        notifier.notify({
+          'title': 'VoiceBox',
+          icon: path.join(__dirname, '../assets/images/icon.png'),
+          'message': 'An update is available for the '+responder+' responder'
+        });
         self.installedRespondersUpdated();
       }
     });
