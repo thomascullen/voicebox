@@ -7,6 +7,8 @@ var request = require('request');
 var childProcess = require('child_process');
 var BrowserWindow = require('browser-window');
 
+var window = undefined
+
 // Add npm path to PATH...
 // this is too much of a hack and needs improvement
 process.env.PATH = [
@@ -20,7 +22,6 @@ function RespondersManager(){
   this.appDataPath = path.join(app.getPath('appData'), 'voicebox')
   this.respondersPath = path.join(self.appDataPath, 'responders')
   this.installedResponders = {}
-  this.window = undefined
 
   this.init = function(){
     self.loadStorage(function(){
@@ -31,14 +32,17 @@ function RespondersManager(){
 
   // opens the responders manager window
   this.open = function(){
-    self.window = new BrowserWindow({ width: 600, height: 460, resizable: false });
-    self.window.loadUrl('file://' + __dirname + '/../views/responders_manager.html');
+    if ( !window ){
+      window = new BrowserWindow({ width: 600, height: 460, resizable: false });
+      window.loadUrl('file://' + __dirname + '/../views/responders_manager.html');
 
-    if (os.platform() === 'darwin'){ app.dock.show(); }
+      if (os.platform() === 'darwin'){ app.dock.show(); }
 
-    self.window.on('closed', function(){
-      if (os.platform() === 'darwin'){ app.dock.hide(); }
-    })
+      window.on('closed', function(){
+        window = undefined
+        if (os.platform() === 'darwin'){ app.dock.hide(); }
+      })
+    }
   }
 
   // loadStorage is used to create the storage directories if they
@@ -169,11 +173,16 @@ function RespondersManager(){
   }
 
   this.uninstallResponder = function(responder, callback){
+    self.removeResponder(responder, function(){
+      self.installedRespondersUpdated();
+    })
+  }
+
+  this.removeResponder = function(responder, callback){
     var responderPath = path.join(self.respondersPath, responder)
     if ( self.validResponder(responderPath) ){
       childProcess.exec( 'rm -r ' + self.fixPath(responderPath), function ( err, stdout, stderr ){
         delete self.installedResponders[responder];
-        self.installedRespondersUpdated();
         if ( callback ){ callback(); }
       });
     }
@@ -194,14 +203,14 @@ function RespondersManager(){
 
   // updates a given responder
   this.updateResponder = function(responder){
-    self.uninstallResponder(responder, function(){
+    self.removeResponder(responder, function(){
       self.installResponder(responder);
     })
   }
 
   this.installedRespondersUpdated = function(){
-    if ( self.window ){
-      self.window.webContents.send('installed_responders_updated', self.installedResponders)
+    if ( window ){
+      window.webContents.send('installed_responders_updated', self.installedResponders)
     }
   }
 
@@ -209,8 +218,9 @@ function RespondersManager(){
     return path.replace(" ", "\\ ");
   }
 
+  // opens a file dialog to install a responder from a folder
   this.installFromDir = function(){
-    dialog.showOpenDialog(self.window, {properties: ['openDirectory']}, function(folderPath){
+    dialog.showOpenDialog(window, {properties: ['openDirectory']}, function(folderPath){
       if ( folderPath ){
         var folderPath = folderPath[0];
         var packageJsonPath = path.join(folderPath, 'package.json');
@@ -232,15 +242,16 @@ function RespondersManager(){
 
   this.coreResponders = function(){
     this.installResponder('voicebox-maths')
-    // this.installResponder('voicebox-timers')
+    this.installResponder('voicebox-timers')
     this.installResponder('voicebox-basics')
     this.installResponder('voicebox-weather')
   }
 
   // displays a message if the responders manager window is open
   this.message = function(message){
-    dialog.showMessageBox(self.window, {
-      message: message
+    dialog.showMessageBox(window, {
+      message: message,
+      buttons: ['Ok']
     })
   }
 

@@ -39,6 +39,7 @@ module.exports = function(grunt) {
       osxBuild: {
         options: {
           dir: '.',
+          asar: true,
           out: 'dist',
           arch: 'x64',
           overwrite: true,

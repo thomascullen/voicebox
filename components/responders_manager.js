@@ -53,10 +53,12 @@ class RespondersManager extends React.Component {
         updateButton = <button onClick={self.update.bind(self, responder)}>Update</button>
       }
 
+
       return (
         <li key={i}>
-          <h4>{responder}</h4>
           <span className='version'>v.{self.state.responders[responder].version}</span>
+          <h4>{self.state.responders[responder].name}</h4>
+          <p>{self.state.responders[responder].description}</p>
           <button onClick={self.uninstall.bind(self, responder)}>Uninstall</button>
           {updateButton}
         </li>
