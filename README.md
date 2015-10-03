@@ -1,8 +1,10 @@
 <img src="assets/images/icon.png" width="100">
 
-[Download](https://github.com/thomascullen/voicebox/releases)
-
 ![example](http://thomascullen.io/voicebox/voicebox.gif)
+
+[Download](https://github.com/thomascullen/voicebox/releases)
+<br>
+__voicebox requires [node.js](https://nodejs.org) to be installed on your system for it to work__
 
 ## How
 Press `alt+s` to trigger the voicebox window

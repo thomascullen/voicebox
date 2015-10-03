@@ -2,7 +2,7 @@
 
 import ipc from 'ipc';
 import React from 'react';
-import remote from 'remote'
+import remote from 'remote';
 var manager = remote.getGlobal('respondersManager');
 
 class RespondersManager extends React.Component {
@@ -22,13 +22,18 @@ class RespondersManager extends React.Component {
     });
   }
 
-  install(){
+  install(e){
+    e.preventDefault()
     var input = this.refs.responder.getDOMNode();
     var value = input.value;
     if ( value.length > 0 ){
       manager.installResponder(value)
       input.value = ''
     }
+  }
+
+  installFromDir(){
+    manager.installFromDir();
   }
 
   update(responder){
@@ -62,8 +67,11 @@ class RespondersManager extends React.Component {
       <div className='responders_manager'>
         <div className='install_responder'>
           <h2>Install a responder</h2>
-          <input type='text' ref='responder' placeholder='responder title..' />
-          <button onClick={this.install.bind(this)}>Install</button>
+          <form onSubmit={this.install.bind(this)}>
+            <input type='text' ref='responder' placeholder='responder title..' />
+            <input type='submit' value='Install' />
+          </form>
+          <button onClick={this.installFromDir.bind(this)}>Install From Dir</button>
         </div>
         <ul className='responders'>
           <h3>Installed Responders</h3>

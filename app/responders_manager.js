@@ -1,12 +1,11 @@
+var os = require('os');
 var fs = require('fs');
 var app = require('app');
 var path = require('path');
+var dialog = require('dialog');
 var request = require('request');
-var sudo = require('sudo-prompt');
 var childProcess = require('child_process');
-var exec = require( 'child_process' ).exec;
 var BrowserWindow = require('browser-window');
-sudo.setName('VoiceBox');
 
 // Add npm path to PATH...
 // this is too much of a hack and needs improvement
@@ -20,26 +19,26 @@ function RespondersManager(){
 
   this.appDataPath = path.join(app.getPath('appData'), 'voicebox')
   this.respondersPath = path.join(self.appDataPath, 'responders')
-  this.respondersStorage = path.join(self.respondersPath, 'responders.json')
   this.installedResponders = {}
   this.window = undefined
 
-  // called when the RespondersManager is initialized
   this.init = function(){
     self.loadStorage(function(){
       self.loadResponders();
-      self.defaultResponders();
+      self.coreResponders();
     });
   }
 
+  // opens the responders manager window
   this.open = function(){
-    self.window = new BrowserWindow({
-      width: 600,
-      height: 460,
-      resizable: false
-    });
-
+    self.window = new BrowserWindow({ width: 600, height: 460, resizable: false });
     self.window.loadUrl('file://' + __dirname + '/../views/responders_manager.html');
+
+    if (os.platform() === 'darwin'){ app.dock.show(); }
+
+    self.window.on('closed', function(){
+      if (os.platform() === 'darwin'){ app.dock.hide(); }
+    })
   }
 
   // loadStorage is used to create the storage directories if they
@@ -55,42 +54,48 @@ function RespondersManager(){
 
   // loadResponders is used to load the currently installed responders
   this.loadResponders = function(){
-    var installedResponders = self.installedResponders;
-    self.responderFolders().forEach(function(responder){
-      self.loadResponder(responder, function(){
+    // iterate through the folders in the responders folder
+    self.responderFolders().forEach(function(responder_folder){
+      var responderPath = path.join(self.respondersPath, responder_folder);
+      self.loadResponder(responderPath, function(responder){
         self.checkForUpdate(responder);
       });
     })
   }
 
+  // returns the folders inside the responders directory
   this.responderFolders = function(){
     return fs.readdirSync(self.respondersPath).filter(function(file) {
       return fs.statSync(path.join(self.respondersPath, file)).isDirectory();
     });
   }
 
-  // loadResponder loads a given responder
-  this.loadResponder = function(responder, callback){
-    if (self.responderInstalled(responder)){
-      // require the responder
-      var packagePath = path.join(self.respondersPath, responder);
-      var pathToPackage = path.relative(__dirname, packagePath);
+  // loadResponder loads a given responder from a path
+  this.loadResponder = function(responderPath, callback){
+    if (self.validResponder(responderPath)){
+      // build the path to the responder
+      var pathToPackage = self.pathTo(responderPath);
+      // try to require it
       try {
         require(pathToPackage)
-        // get the package json file
-        var packageJson = require(pathToPackage+'/package.json')
-        self.installedResponders[responder] = packageJson
-        console.log('Loaded responder : '+responder);
-        if ( callback ){ callback(); }
+        // get the package json file and add it to the installedResponders object
+        var responder = require(pathToPackage+'/package.json')
+        self.installedResponders[responder.name] = responder
+        self.installedRespondersUpdated()
+        console.log('Loaded responder : '+responder.name);
+        if ( callback ){ callback(responder.name); }
       } catch(err) {
         console.log(err);
       }
+    }else{
+      console.log(responderPath+' is not a valid responder');
     }
   }
 
-  // installResponder is used to begin the process of installing a responder
+  // installResponder installs a given responder name
   this.installResponder = function(responder){
-    if (self.responderInstalled(responder)){
+    // if the responder is already installed
+    if (self.validResponder(path.join(self.respondersPath, responder))){
       return;
     }else{
       // search the NPM registry for the package tarball URL so it can be downloaded
@@ -100,14 +105,13 @@ function RespondersManager(){
         if ( body.dist ){
           var tarballURL = body.dist.tarball;
           var responderVersion = body.version;
-          self.downloadResponder(responder, tarballURL, function(){
-            self.installedResponders[responder] = {
-              version: responderVersion
-            }
-            self.loadResponder(responder);
+          // download the responder
+          self.downloadResponder(responder, tarballURL, function(responderPath){
+            self.loadResponder(responderPath);
             self.installedRespondersUpdated();
           });
         }else{
+          self.message('Responder does not exist');
           return false;
         }
       });
@@ -120,8 +124,8 @@ function RespondersManager(){
     var filePath = path.join(self.respondersPath, responder+'.tgz')
     var r = request.get(tarballURL)
     .on('error', function(){
+      self.message('Failed to download responder')
       return false;
-      console.log('failed to download package');
     })
     .on('response', function(){
       r.pipe(fs.createWriteStream(filePath));
@@ -136,7 +140,8 @@ function RespondersManager(){
   this.unzipPackage = function(filePath, callback){
     // the extracted path is the same path without the .tgz
     var packagePath = filePath.slice(0, -4) + '/'
-    fs.mkdirSync(packagePath);
+    if (!fs.existsSync(packagePath)){ fs.mkdirSync(packagePath); }
+    // TODO: without this timeout some packages dont get extracted. Its temporary solution and needs to be improved.
     setTimeout(function(){
       childProcess.spawn('tar', ['-C', packagePath, '-xf', filePath, '--strip-components', 1])
       .on('exit', function(){
@@ -150,13 +155,13 @@ function RespondersManager(){
   this.installPackageDependencies = function(packagePath, callback){
     childProcess.spawn('npm', ['install'], {cwd: packagePath})
     .on('exit', function(){
-      callback();
+      callback(packagePath);
     })
   }
 
-  // checks if a given responders has already been installed
-  this.responderInstalled = function(responder){
-    if (fs.existsSync(path.join(self.respondersPath, responder+'/package.json'))){
+  // Returns if a given path is a valid responder or not
+  this.validResponder = function(responderPath){
+    if (fs.existsSync(path.join(responderPath, '/package.json'))){
       return true
     }else{
       return false
@@ -164,9 +169,9 @@ function RespondersManager(){
   }
 
   this.uninstallResponder = function(responder, callback){
-    if ( self.responderInstalled(responder) ){
-      var responderPath = path.join(self.respondersPath, responder)
-      exec( 'rm -r ' + self.fixPath(responderPath), function ( err, stdout, stderr ){
+    var responderPath = path.join(self.respondersPath, responder)
+    if ( self.validResponder(responderPath) ){
+      childProcess.exec( 'rm -r ' + self.fixPath(responderPath), function ( err, stdout, stderr ){
         delete self.installedResponders[responder];
         self.installedRespondersUpdated();
         if ( callback ){ callback(); }
@@ -174,6 +179,7 @@ function RespondersManager(){
     }
   }
 
+  // checkForUpdate checks the NPM registry to get the latest version of a responder package
   this.checkForUpdate = function(responder){
     // search the NPM registry for the package tarball URL so it can be downloaded
     request.get('https://registry.npmjs.com/'+responder+'/latest', function(err, response, body){
@@ -186,6 +192,7 @@ function RespondersManager(){
     });
   }
 
+  // updates a given responder
   this.updateResponder = function(responder){
     self.uninstallResponder(responder, function(){
       self.installResponder(responder);
@@ -202,11 +209,39 @@ function RespondersManager(){
     return path.replace(" ", "\\ ");
   }
 
-  this.defaultResponders = function(){
+  this.installFromDir = function(){
+    dialog.showOpenDialog(self.window, {properties: ['openDirectory']}, function(folderPath){
+      if ( folderPath ){
+        var folderPath = folderPath[0];
+        var packageJsonPath = path.join(folderPath, 'package.json');
+        if (fs.existsSync(packageJsonPath)){
+          var responder = require(self.pathTo(packageJsonPath));
+          var responderPath = path.join(self.respondersPath, responder.name)
+          fs.symlink(folderPath, responderPath, function(){
+            self.loadResponder(responderPath)
+          });
+        }
+      }
+    });
+  }
+
+  // builds the path to a given folder from the current directory
+  this.pathTo = function(folder){
+    return path.relative(__dirname, folder)
+  }
+
+  this.coreResponders = function(){
     this.installResponder('voicebox-maths')
-    this.installResponder('voicebox-timers')
+    // this.installResponder('voicebox-timers')
     this.installResponder('voicebox-basics')
     this.installResponder('voicebox-weather')
+  }
+
+  // displays a message if the responders manager window is open
+  this.message = function(message){
+    dialog.showMessageBox(self.window, {
+      message: message
+    })
   }
 
   // call the init function

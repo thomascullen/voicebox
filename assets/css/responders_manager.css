@@ -2,21 +2,22 @@ body{
   background: #ebeff2;
 }
 
-button{
+button,
+input[type=submit]{
   border: none;
   height: 25px;
   outline: none;
-  color: #FFFFFF;
+  color: #555555;
   cursor: pointer;
   font-size: 13px;
   line-height: 25px;
   text-align: center;
   border-radius: 3px;
-  background: #5ca4fc;
+  background: #EEEEEE;
   padding: 0 10px 0 10px;
 }
 
-button:hover{ background: #6790fd; }
+button:hover{ background: #E5E5E5; }
 
 .install_responder{
   background: white;
@@ -30,8 +31,24 @@ button:hover{ background: #6790fd; }
   margin: 0 0 5px 0;
 }
 
+.install_responder button,
+.install_responder input[type=submit]{
+  width: 15%;
+  padding: 0;
+  height: 40px;
+  font-size: 14px;
+  line-height: 40px;
+}
+
+form{
+  float: left;
+  width: 75%;
+  margin: 0 2% 0 0;
+  position: relative;
+}
+
 .install_responder input[type=text]{
-  width: 82%;
+  width: 100%;
   outline: none;
   font-size: 14px;
   border-radius: 3px;
@@ -39,13 +56,17 @@ button:hover{ background: #6790fd; }
   padding: 10px 15px 10px 15px;
 }
 
+form input[type=submit]{
+  top: 0;
+  right: 0;
+  color: #FFFFFF;
+  position: absolute;
+  background: #6db6f4;
+}
+
 .install_responder button{
-  width: 15%;
-  padding: 0;
-  height: 40px;
-  font-size: 14px;
-  margin: 0 0 0 3%;
-  line-height: 40px;
+  width: 23%;
+  padding: 0 0 0 0;
 }
 
 h3{

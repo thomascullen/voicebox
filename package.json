@@ -29,8 +29,6 @@
     "configstore": "^1.2.1",
     "npm": "^3.3.5",
     "react": "^0.13.3",
-    "request": "^2.63.0",
-    "shell-path": "^1.0.2",
-    "sudo-prompt": "^1.1.7"
+    "request": "^2.63.0"
   }
 }
