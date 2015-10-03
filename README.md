@@ -46,13 +46,15 @@ electron .
 Now press `alt+s`
 
 ## Adding responders
-Create a new folder for your responder in `~/.voicebox/responders`. This should
-have the basic structure for an NPM module; a package.json and an index.js.
+Create a new folder for your responder in `~/Library/Application\ Support/voicebox/responders`.
+This should have the basic structure for an NPM module; a package.json and an index.js.
 You can then use the `voiceBox.addResponder` method inside your module
 to define your responder.
 
 You can publish your responder module to NPM so that other users can use your
 responder
+
+__note__: The responder development process will be improved shortly.
 
 The `addResponder` method takes two parameters:
 - **regex** ( Regex ): The users input will be matched against this to determine if it should respond
