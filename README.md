@@ -40,6 +40,9 @@ electron .
 Now press `alt+s`
 
 ## Adding responders
+
+**Note**: If you are thinking of adding responders please look at the [external responders](https://github.com/thomascullen/voicebox/tree/external_responders) branch before doing so. I am trying to externalize the responders so they can be built as separate npm modules.
+
 Create a new javascript file for your responder in the `/responders` directory.
 You can then use the `voiceBox.addResponder` method to define your responder.
 
