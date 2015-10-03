@@ -184,6 +184,9 @@ function RespondersManager(){
     if ( self.validResponder(responderPath) ){
       childProcess.exec( 'rm -r ' + self.fixPath(responderPath), function ( err, stdout, stderr ){
         delete self.installedResponders[responder];
+        // unrequire the file
+        var pathToPackage = self.pathTo(responderPath);
+        if (require.cache[pathToPackage]){ delete require.cache[pathToPackage]; }
         if ( callback ){ callback(); }
       });
     }
