@@ -1,8 +1,10 @@
 <img src="assets/images/icon.png" width="100">
 
-[Download](https://github.com/thomascullen/voicebox/releases)
-
 ![example](http://thomascullen.io/voicebox/voicebox.gif)
+
+[Download](https://github.com/thomascullen/voicebox/releases)
+<br>
+__voicebox requires [node.js](https://nodejs.org) to be installed on your system for it to work__
 
 ## How
 Press `alt+s` to trigger the voicebox window
@@ -25,11 +27,6 @@ Remind me to take the pizza out of the oven in 15 minutes
 What's the weather like in Dublin
 ```
 
-## Adding better voices
-You can change the voice in the OS X speech and dictation settings. In the system voice dropdown you can select 'custom' which will allow you to download more voices. I use 'Samantha' which is the same voice used by siri on the iPhone.
-
-![voices](http://i59.tinypic.com/iwjju8.png)
-
 ## Dev Setup
 VoiceBox is built on top of [electron](http://electron.atom.io).
 ```
@@ -40,11 +37,12 @@ electron .
 Now press `alt+s`
 
 ## Adding responders
+Create a new folder for your responder. Responders are downloaded from NPM so
+a responder will need at least a package.json and index.js file. Open the responders
+manager and click the 'install from dir' button and select your responder folder.
 
-**Note**: If you are thinking of adding responders please look at the [external responders](https://github.com/thomascullen/voicebox/tree/external_responders) branch before doing so. I am trying to externalize the responders so they can be built as separate npm modules.
-
-Create a new javascript file for your responder in the `/responders` directory.
-You can then use the `voiceBox.addResponder` method to define your responder.
+You should publish your responder module to NPM so that other users can use your
+responder. 
 
 The `addResponder` method takes two parameters:
 - **regex** ( Regex ): The users input will be matched against this to determine if it should respond
@@ -103,6 +101,11 @@ voiceBox.db.set('users_name', 'thomas')
 voiceBox.db.get('users_name')
 ```
 
+## Adding better voices
+You can change the voice in the OS X speech and dictation settings. In the system voice dropdown you can select 'custom' which will allow you to download more voices. I use 'Samantha' which is the same voice used by siri on the iPhone.
+
+![voices](http://i59.tinypic.com/iwjju8.png)
+
 ## Ideas for more responders
 - Adding / Reading events from calendar
 - Sending / Reading messages from messages.app
@@ -120,6 +123,3 @@ All the things
 
 ## License
 VoiceBox is released under the [MIT License](http://opensource.org/licenses/MIT).
-
-## Credits
-The duckduckgo responder uses [their awesome API](https://duckduckgo.com/api)
