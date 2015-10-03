@@ -38,22 +38,21 @@ module.exports = function(grunt) {
     electron: {
       osxBuild: {
         options: {
-          name: 'VoiceBox',
           dir: '.',
-          asar: true,
           out: 'dist',
           arch: 'x64',
           overwrite: true,
-          version: '0.33.3',
+          name: 'VoiceBox',
+          version: '0.33.4',
           platform: 'darwin',
           icon: 'assets/icon.icns',
-          ignore: '^(dist|components|responders)$',
           'app-version'   : packageJson.version,
+          ignore: '^(dist|components|responders)$',
         }
       }
     }
   });
 
-  grunt.registerTask('default', ['env:dev', 'watch']);
+  grunt.registerTask('default', ['env:dev', 'babel', 'watch']);
   grunt.registerTask('build', ['env:dist', 'clean', 'babel', 'electron']);
 };

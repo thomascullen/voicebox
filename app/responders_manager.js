@@ -2,9 +2,18 @@ var fs = require('fs');
 var app = require('app');
 var path = require('path');
 var request = require('request');
+var sudo = require('sudo-prompt');
 var childProcess = require('child_process');
 var exec = require( 'child_process' ).exec;
 var BrowserWindow = require('browser-window');
+sudo.setName('VoiceBox');
+
+// Add npm path to PATH...
+// this is too much of a hack and needs improvement
+process.env.PATH = [
+  "/usr/local/bin",
+  process.env.PATH,
+].join(':')
 
 function RespondersManager(){
   var self = this

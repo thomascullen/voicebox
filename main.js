@@ -5,7 +5,6 @@ var Menu = require('menu');
 var Tray = require('tray');
 var path = require('path');
 var globalShortcut = require('global-shortcut');
-
 voiceBox = require('./app/voicebox');
 // load the responders manager
 respondersManager = require('./app/responders_manager');
