@@ -34,7 +34,13 @@ function RespondersManager(){
   // opens the responders manager window
   this.open = function(){
     if ( !window ){
-      window = new BrowserWindow({ width: 600, height: 460, resizable: false });
+      window = new BrowserWindow({
+        width: 700,
+        height: 540,
+        'min-width': 500,
+        'min-height': 500
+      });
+
       window.loadUrl('file://' + __dirname + '/../views/responders_manager.html');
 
       if (os.platform() === 'darwin'){ app.dock.show(); }

@@ -39,7 +39,7 @@ module.exports = function(grunt) {
       osxBuild: {
         options: {
           dir: '.',
-          asar: true,
+          asar: false,
           out: 'dist',
           arch: 'x64',
           overwrite: true,
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
           platform: 'darwin',
           icon: 'assets/icon.icns',
           'app-version'   : packageJson.version,
-          ignore: '^(dist|components|responders)$',
+          ignore: '^(/dist|/components|)$',
         }
       }
     }

@@ -29,7 +29,7 @@ What's the weather like in Dublin
 VoiceBox is built on top of [electron](http://electron.atom.io).
 ```
 npm install
-grunt watch
+grunt
 electron .
 ```
 Now press `alt+s`
@@ -41,9 +41,6 @@ Now press `alt+s`
 Create a new folder for your responder. Responders are downloaded from NPM so
 a responder will need at least a package.json and index.js file. Open the responders
 manager and click the 'install from dir' button and select your responder folder.
-
-You should publish your responder module to NPM so that other users can use your
-responder.
 
 The `addResponder` method takes two parameters:
 - **regex** ( Regex ): The users input will be matched against this to determine if it should respond
@@ -120,7 +117,6 @@ All the things
 
 - Better application structure
 - Improve documentation
-- Ability to change config to pull in responses as npm packages ( similar to how [Hubot](https://hubot.github.com) handles scripts )
 
 ## License
 VoiceBox is released under the [MIT License](http://opensource.org/licenses/MIT).
